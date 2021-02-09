@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { Component, useEffect, useState,useCallback } from "react";
 import "../styles/App.css";
 let Timer=()=>  {
   let [time,setTime]=useState(0);
@@ -11,21 +11,22 @@ let Timer=()=>  {
    console.log("useEffect",x,y);
    console.log(interval);
    if (x==250 && y==250)
-   {
-    clearInterval(interval);
-   }
-    },[x,y]);
+    {
+   clearInterval(interval)
+   document.removeEventListener("keydown",handleKeyDown)
+    }
+   },[x,y]);
   
   let handleClick=()=>{
-    // console.log(time);
+     console.log(time,"handle");
     document.addEventListener("keydown",handleKeyDown);
     interval=setInterval(increseTime,1000);
     set(interval);
   }
+  const handleKeyDown = useCallback((event) =>handleKeyDown1(event), [])
 
-
-  let handleKeyDown=(event)=>{
-    // console.log("keydown",event.keyCode);
+  let handleKeyDown1=(event)=>{
+    console.log("keydown",event.keyCode);
     // console.log(ballPosition.left,ballPosition.top);
     switch(event.keyCode)
     {
@@ -90,26 +91,13 @@ let Timer=()=>  {
 
 
 
-
-
-
-  let increseTime=()=>{
+ let increseTime=()=>{
     setTime((time)=>time+1);
   }
 
 
 
-
-
-
-
-
-
-
-
-
-
-    return (
+  return (
      <div>
        <div className="ball" style=
        {{position:"absolute",top:ballPosition.top,left:ballPosition.left}}>
